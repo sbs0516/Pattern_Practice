@@ -1,25 +1,33 @@
 package com.example.pattern_practice
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Presenter.View {
+
+    lateinit var presenter: Presenter
+    lateinit var title: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val title = findViewById<TextView>(R.id.title)
-        val subTitle = findViewById<TextView>(R.id.subTitle)
-
-        title.text = "처음 문장"
-        subTitle.text = "처음 확인"
+        title = findViewById<TextView>(R.id.title)
+        presenter = PresenterImpl(this@MainActivity)
 
         title.setOnClickListener {
-            title.text = clickTextView()
+            presenter.confirm()
         }
+
     }
-    private fun clickTextView(): String {
-        return "문장을 눌렀다"
+    override fun setText(text: String) {
+        title.text = text
+    }
+}
+
+class Model {
+    fun clickTextView(): String {
+        return "첫째줄 문장. MVP"
     }
 }
